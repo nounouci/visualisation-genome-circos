@@ -1,2 +1,4 @@
-# visualisation-genome-circos
-Visualisation de données génomiques avec Circos (chromosomes, densité de gènes, synténie)
+# TP Circos - Visualisation de données génomiques
+
+## Objectif
+Ce projet a pour objectif de représenter des données génomiques à l’aide du logiciel Circos.
