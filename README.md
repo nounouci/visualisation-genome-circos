@@ -1,127 +1,127 @@
 
+
 # **TP Circos – Visualisation de données génomiques**
 
-## 🎯 Objectif
+## 1. Objectif
 
 L’objectif de ce TP est de représenter graphiquement des données génomiques à l’aide du logiciel **Circos**, en manipulant différents types de données (séquences, annotations, synténie).
 
 ---
 
-## 💻 Environnement de travail
+## 2. Environnement de travail
 
-Le travail a été réalisé sur le cluster **GenOuest**, en utilisant une connexion SSH.
+Le travail a été réalisé sur le cluster **GenOuest**, via une connexion SSH.
 
-Les différentes étapes ont été effectuées via des **scripts Bash** exécutés sur un nœud de calcul (compute node).
-Les visualisations ont été générées avec le logiciel **Circos**.
-
----
-
-## 📂 Données utilisées
-
-Les données utilisées pour le génome de **Sorghum bicolor** sont :
-
-* Séquences génomiques : `Sbicolor_313_v3.0.fa`
-* Séquences hardmasked : `Sbicolor_313_v3.0.hardmasked.fa`
-* Annotations de gènes : `Sbicolor_313_v3.1.gene_exons.gff3`
-* Données de synténie : `Sb_Sb.aligncoords.gcoords.txt`
+Les traitements ont été effectués à l’aide de **scripts Bash** exécutés sur un nœud de calcul (compute node).
+Les visualisations ont été produites avec le logiciel **Circos**.
 
 ---
 
-## ⚙️ Méthodes
+## 3. Données utilisées
 
-### 🔹 1. Préparation des données
+Les données utilisées pour le génome de *Sorghum bicolor* sont les suivantes :
 
-Les fichiers ont été récupérés depuis le serveur et organisés en dossiers :
-
-* `data/` : données d’entrée
-* `scripts/` : scripts Bash
-* `results/` : résultats
-
----
-
-### 🔹 2. Génération du karyotype
-
-Un script Bash a été utilisé pour extraire les chromosomes et calculer leur taille à partir du fichier FASTA.
-
-Seuls les chromosomes (`Chr01` à `Chr10`) ont été conservés, les contigs (`super_*`) ont été exclus.
-
-#### 📊 Exemple de karyotype :
-
-```text
-chr - Chr01 Chr01 1 80884392 blue
-chr - Chr02 Chr02 1 77742459 blue
-chr - Chr03 Chr03 1 74386277 blue
-chr - Chr04 Chr04 1 68658214 blue
-chr - Chr05 Chr05 1 71854669 blue
-chr - Chr06 Chr06 1 61277060 blue
-chr - Chr07 Chr07 1 65505356 blue
-chr - Chr08 Chr08 1 62686529 blue
-chr - Chr09 Chr09 1 59416394 blue
-chr - Chr10 Chr10 1 61233695 blue
-```
+| Type de données      | Fichier                           |
+| -------------------- | --------------------------------- |
+| Séquences génomiques | Sbicolor_313_v3.0.fa              |
+| Séquences hardmasked | Sbicolor_313_v3.0.hardmasked.fa   |
+| Annotations de gènes | Sbicolor_313_v3.1.gene_exons.gff3 |
+| Données de synténie  | Sb_Sb.aligncoords.gcoords.txt     |
 
 ---
 
-### 🔹 3. Densité des éléments transposables
+## 4. Méthodes
+
+### 4.1 Préparation des données
+
+Les fichiers ont été organisés dans une structure de projet :
+
+| Dossier  | Contenu           |
+| -------- | ----------------- |
+| data/    | Données d’entrée  |
+| scripts/ | Scripts Bash      |
+| results/ | Résultats générés |
+
+---
+
+### 4.2 Génération du karyotype
+
+Un script Bash a permis d’extraire les chromosomes et de calculer leur taille à partir du fichier FASTA.
+
+Seuls les chromosomes principaux (Chr01 à Chr10) ont été conservés, les contigs (super_*) ayant été exclus.
+
+#### Exemple de karyotype :
+
+| Chromosome | Début | Fin      | Couleur |
+| ---------- | ----- | -------- | ------- |
+| Chr01      | 1     | 80884392 | blue    |
+| Chr02      | 1     | 77742459 | blue    |
+| Chr03      | 1     | 74386277 | blue    |
+| Chr04      | 1     | 68658214 | blue    |
+| Chr05      | 1     | 71854669 | blue    |
+| Chr06      | 1     | 61277060 | blue    |
+| Chr07      | 1     | 65505356 | blue    |
+| Chr08      | 1     | 62686529 | blue    |
+| Chr09      | 1     | 59416394 | blue    |
+| Chr10      | 1     | 61233695 | blue    |
+
+---
+
+### 4.3 Densité des éléments transposables
 
 La densité des éléments transposables a été calculée à partir du fichier **hardmasked**.
 
-Les caractères `N` correspondent aux régions répétées.
-Le nombre de `N` a été compté par fenêtres de **100 kb**.
+Les caractères « N » correspondent aux régions répétées.
+Le nombre de « N » a été compté par fenêtres de 100 kb.
 
-#### 📊 Format du fichier :
+#### Exemple de résultat :
 
-```text
-Chr01   1       100000   10832
-Chr01   100001  200000   1683
-...
-```
+| Chromosome | Début  | Fin    | Nombre de N |
+| ---------- | ------ | ------ | ----------- |
+| Chr01      | 1      | 100000 | 58652       |
+| Chr01      | 100001 | 200000 | 34534       |
+| Chr01      | 200001 | 300000 | 37062       |
 
 ---
 
-### 🔹 4. Densité des gènes
+### 4.4 Densité des gènes
 
 Les gènes ont été extraits à partir du fichier GFF3.
 
-Le nombre de gènes a été calculé par fenêtres de **100 kb** sur chaque chromosome.
+Le nombre de gènes a été calculé par fenêtres de 100 kb sur chaque chromosome afin d’étudier leur distribution.
 
 ---
 
-### 🔹 5. Synténie intragénomique
+### 4.5 Synténie intragénomique
 
-Les données de synténie ont été extraites à partir du fichier `.gcoords`.
+Les relations de synténie ont été obtenues à partir du fichier `.gcoords`.
 
-Les relations entre régions homologues ont été converties au format compatible avec Circos (`links.txt`).
-
----
-
-## 🎨 Visualisation avec Circos
-
-Les fichiers générés ont été utilisés dans un fichier de configuration (`circos.conf`) pour produire une visualisation circulaire.
-
-La figure obtenue permet de représenter :
-
-* les chromosomes
-* la densité des gènes
-* la densité des éléments transposables
-* les relations de synténie
+Ces relations ont été converties au format attendu par Circos afin de représenter les correspondances entre régions homologues du génome.
 
 ---
 
-## 📊 Résultats
+## 5. Visualisation avec Circos
 
-La visualisation Circos permet d’observer :
+Les fichiers générés (karyotype, densité des gènes, densité des transposons, synténie) ont été utilisés dans un fichier de configuration (`circos.conf`).
 
-* l’organisation globale du génome
-* la distribution non homogène des gènes
-* la présence de régions riches en éléments répétés
-* les duplications et relations entre régions génomiques
+Circos a permis de produire une représentation circulaire du génome.
 
 ---
 
-## 📁 Organisation du projet
+## 6. Résultats
 
-```text
+La visualisation obtenue permet de mettre en évidence :
+
+* l’organisation des chromosomes
+* la distribution des gènes le long du génome
+* les régions riches en éléments répétés
+* les relations de synténie entre différentes régions
+
+---
+
+## 7. Organisation du projet
+
+```
 projet_circos/
 ├── data/
 ├── scripts/
@@ -129,5 +129,5 @@ projet_circos/
 ```
 
 
-* 👉 version **2 pages optimisée PDF**
-* 👉 ou ajouter une **explication simple du graphique Circos (très important pour la note)**
+* ➜ version **2 pages max (optimisée pour note)**
+* ➜ ajouter **interprétation du graphique Circos (très important pour gratter des points)**
